@@ -7,10 +7,17 @@ const Navbar: React.FC<NavbarProps> = () => {
   return (
     <div className="px-10 py-3 border-white/20 border-b-[1px]">
       <div className="flex items-center justify-between h-6">
-        <h1>
+        <h1 className="text-big swift tracking-wider">
           <Link to={"/"}>Swifts Chat</Link>
         </h1>
-        <div className="flex items-center gap-10 ">
+        <h2 className="text-[15px]">
+          Logged in as
+          <span className="italic text-base tracking-wide text-orange-600/80">
+            {"  "}
+            Abhaya
+          </span>
+        </h2>
+        <div className="flex items-center gap-10 tracking-wider">
           <Link
             to={"/login"}
             className="text-white/60 hover:text-white transition-all duration-100 ease-in"
