@@ -6,6 +6,7 @@ import {
 import Login from "./pages/Login.tsx";
 import Register from "./pages/Register.tsx";
 import Chat from "./pages/Chat.tsx";
+import Wrapper from "./layout.tsx";
 
 const router = createBrowserRouter([
   {
@@ -27,7 +28,11 @@ const router = createBrowserRouter([
 ]);
 
 function App(): JSX.Element {
-  return <RouterProvider router={router} />;
+  return (
+    <Wrapper>
+      <RouterProvider router={router} />
+    </Wrapper>
+  );
 }
 
 export default App;
