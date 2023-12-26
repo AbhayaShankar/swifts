@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { createContext, useCallback, useState } from "react";
-import { UserType } from "../types";
+import { createContext, useCallback, useEffect, useState } from "react";
+import { AuthContextType, UserType } from "../types";
 import { baseUrl, postRequest } from "../utils/services";
 
 // type TUserContext = [UserType[], React.Dispatch<React.SetStateAction<UserType[]>>];
 // export const AuthContext = createContext<TUserContext>([[], () => null]);
 
-export const AuthContext = createContext();
+export const AuthContext = createContext({} as AuthContextType);
 
 export const AuthContextProvider = ({
   children,
@@ -23,7 +23,12 @@ export const AuthContextProvider = ({
     password: "",
   });
 
-  console.log("regitserInfo", registerInfo);
+  console.log("Active User", user);
+
+  useEffect(() => {
+    const user = localStorage.getItem("User");
+    SetUser(JSON.parse(user));
+  }, []);
 
   const updateRegisterInfo = useCallback((info: UserType) => {
     setRegisterInfo(info);
@@ -55,6 +60,11 @@ export const AuthContextProvider = ({
     [registerInfo]
   );
 
+  const logoutUser = useCallback(() => {
+    localStorage.removeItem("User");
+    SetUser(null);
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
@@ -64,6 +74,7 @@ export const AuthContextProvider = ({
         registerError,
         isRegisterLoading,
         registerUser,
+        logoutUser,
       }}
     >
       {children}
