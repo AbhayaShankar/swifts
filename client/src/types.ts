@@ -4,7 +4,9 @@ export type UserType = {
   password: string;
 };
 
-type RegisterErrorType = {
+export type LoginUserType = Omit<UserType, "name">;
+
+type ErrorType = {
   error: boolean;
   message: string;
 };
@@ -12,10 +14,16 @@ type RegisterErrorType = {
 export type AuthContextType = {
   user: UserType | null;
   registerInfo: UserType;
+  loginInfo: LoginUserType;
   updateRegisterInfo: (info: UserType) => void;
-  registerError: RegisterErrorType | null;
+  registerError: ErrorType | null;
   isRegisterLoading: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   registerUser: (e: any) => Promise<void>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  loginUser: (e: any) => Promise<void>;
+  updateLoginInfo: (info: LoginUserType) => void;
+  loginError: ErrorType | null;
+  isLoginLoading: boolean;
   logoutUser: () => void;
 };

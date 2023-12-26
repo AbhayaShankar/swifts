@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createContext, useCallback, useEffect, useState } from "react";
-import { AuthContextType, UserType } from "../types";
+import { AuthContextType, LoginUserType, UserType } from "../types";
 import { baseUrl, postRequest } from "../utils/services";
 
 // type TUserContext = [UserType[], React.Dispatch<React.SetStateAction<UserType[]>>];
@@ -16,6 +16,8 @@ export const AuthContextProvider = ({
   const [user, SetUser] = useState(null);
   const [registerError, setRegisterError] = useState(null);
   const [isRegisterLoading, setIsRegisterLoading] = useState(false);
+  const [loginError, setLoginError] = useState(null);
+  const [isLoginLoading, setIsLoginLoading] = useState(false);
 
   const [registerInfo, setRegisterInfo] = useState({
     name: "",
@@ -23,7 +25,13 @@ export const AuthContextProvider = ({
     password: "",
   });
 
+  const [loginInfo, setLoginInfo] = useState({
+    email: "",
+    password: "",
+  });
+
   console.log("Active User", user);
+  console.log("Login User", loginInfo);
 
   useEffect(() => {
     const user = localStorage.getItem("User");
@@ -32,6 +40,10 @@ export const AuthContextProvider = ({
 
   const updateRegisterInfo = useCallback((info: UserType) => {
     setRegisterInfo(info);
+  }, []);
+
+  const updateLoginInfo = useCallback((info: LoginUserType) => {
+    setLoginInfo(info);
   }, []);
 
   // Register User Logic
@@ -50,7 +62,7 @@ export const AuthContextProvider = ({
       setIsRegisterLoading(false);
 
       if (response?.error) {
-        setRegisterError(response);
+        return setRegisterError(response);
       }
 
       localStorage.setItem("User", JSON.stringify(response));
@@ -58,6 +70,31 @@ export const AuthContextProvider = ({
       SetUser(response);
     },
     [registerInfo]
+  );
+
+  const loginUser = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async (e: any) => {
+      e.preventDefault();
+      setIsLoginLoading(true);
+      setLoginError(null);
+
+      const response = await postRequest(
+        `${baseUrl}/users/login`,
+        JSON.stringify(loginInfo)
+      );
+
+      setIsLoginLoading(false);
+
+      if (response?.error) {
+        return setLoginError(response);
+      }
+
+      localStorage.setItem("User", JSON.stringify(response));
+
+      SetUser(response);
+    },
+    [loginInfo]
   );
 
   const logoutUser = useCallback(() => {
@@ -75,6 +112,11 @@ export const AuthContextProvider = ({
         isRegisterLoading,
         registerUser,
         logoutUser,
+        loginUser,
+        loginInfo,
+        isLoginLoading,
+        loginError,
+        updateLoginInfo,
       }}
     >
       {children}
