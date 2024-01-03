@@ -1,6 +1,7 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useCallback, useEffect, useState } from "react";
 import { ChatContextType, UserType } from "../types";
-import { baseUrl, getRequest } from "../utils/services";
+import { baseUrl, getRequest, postRequest } from "../utils/services";
+import { error } from "console";
 
 interface ChatContextProps {
   children: React.ReactNode;
@@ -16,6 +17,34 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
   const [userChats, setUserChats] = useState(null);
   const [isUserChatsLoading, setIsUserChatsLoading] = useState(false);
   const [userChatsError, setUserChatsError] = useState(null);
+  const [potentialChats, setPotentialChats] = useState([]);
+
+  useEffect(() => {
+    const getUsers = async () => {
+      const response = await getRequest(`${baseUrl}/users`);
+
+      if (response.error) {
+        return console.log("ppotential Chat Error", response);
+      }
+
+      const pChats = response.filter((u) => {
+        let isChatCreated = false;
+        if (user?.id === u._id) return false;
+
+        if (userChats) {
+          isChatCreated = userChats?.some((chat) => {
+            return chat.members[0] === u._id || chat.members[1] === u._id;
+          });
+        }
+
+        return !isChatCreated;
+      });
+
+      setPotentialChats(pChats);
+    };
+
+    getUsers();
+  }, [userChats]);
 
   useEffect(() => {
     const getUserChats = async () => {
@@ -37,12 +66,27 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
     getUserChats();
   }, [user]);
 
+  const createChat = useCallback(async (firstId, secondId) => {
+    const response = await postRequest(
+      `${baseUrl}/chats`,
+      JSON.stringify({ firstId, secondId })
+    );
+
+    if (response.error) {
+      return console.log("Error creating Chat", response);
+    }
+
+    setUserChats((prev) => [...prev, response]);
+  }, []);
+
   return (
     <ChatContext.Provider
       value={{
         userChats,
         userChatsError,
         isUserChatsLoading,
+        potentialChats,
+        createChat,
       }}
     >
       {children}

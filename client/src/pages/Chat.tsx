@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { ChatContext } from "../context/ChatContext";
 import UserChat from "../components/chats/UserChat";
 import { AuthContext } from "../context/AuthContext";
+import PotentialChats from "../components/chats/PotentialChats";
 
 const Chat: React.FC = () => {
   const { user } = useContext(AuthContext);
@@ -12,7 +13,8 @@ const Chat: React.FC = () => {
   // console.log("User Chats", userChats);
 
   return (
-    <div>
+    <div className="py-5">
+      <PotentialChats />
       {userChats?.length < 1 ? null : (
         <div className="flex items-center gap-5">
           <div className="pr-4 my-5">
