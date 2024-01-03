@@ -1,4 +1,5 @@
 export type UserType = {
+  id?: string;
   name: string;
   email: string;
   password: string;
@@ -26,4 +27,10 @@ export type AuthContextType = {
   loginError: ErrorType | null;
   isLoginLoading: boolean;
   logoutUser: () => void;
+};
+
+export type ChatContextType = {
+  userChats: string[] | null;
+  userChatsError: ErrorType | null;
+  isUserChatsLoading: boolean;
 };
