@@ -9,18 +9,18 @@ const Chat: React.FC = () => {
   const { userChats, userChatsError, isUserChatsLoading } =
     useContext(ChatContext);
 
-  console.log("User Chats", userChats);
+  // console.log("User Chats", userChats);
 
   return (
     <div>
       {userChats?.length < 1 ? null : (
         <div className="flex items-center gap-5">
-          <div className="pr-4">
+          <div className="pr-4 my-5">
             {isUserChatsLoading && (
               <p className="animate-pulse">Loading chats...</p>
             )}
             {userChats?.map((chat, index) => (
-              <div key={index}>
+              <div className="" key={index}>
                 <UserChat chat={chat} user={user} />
               </div>
             ))}

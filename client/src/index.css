@@ -10,12 +10,12 @@ html {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  background: #242424;
-  color: #fcfcfc;
 }
 
 body {
+  color: #fcfcfc;
   font-family: "Montserrat", sans-serif;
+  background: #242424;
 }
 
 .swift {
@@ -49,7 +49,7 @@ body {
 }
 
 .user-card .name {
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .user-card .text,
