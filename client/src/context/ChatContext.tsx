@@ -1,7 +1,6 @@
 import React, { createContext, useCallback, useEffect, useState } from "react";
-import { ChatContextType, UserType } from "../types";
+import { ChatContextType, UserType, userChatType } from "../types";
 import { baseUrl, getRequest, postRequest } from "../utils/services";
-import { error } from "console";
 
 interface ChatContextProps {
   children: React.ReactNode;
@@ -27,12 +26,12 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
         return console.log("ppotential Chat Error", response);
       }
 
-      const pChats = response.filter((u) => {
+      const pChats = response.filter((u: userChatType) => {
         let isChatCreated = false;
         if (user?.id === u._id) return false;
 
         if (userChats) {
-          isChatCreated = userChats?.some((chat) => {
+          isChatCreated = userChats?.some((chat: userChatType) => {
             return chat.members[0] === u._id || chat.members[1] === u._id;
           });
         }
@@ -66,7 +65,7 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
     getUserChats();
   }, [user]);
 
-  const createChat = useCallback(async (firstId, secondId) => {
+  const createChat = useCallback(async (firstId: string, secondId: string) => {
     const response = await postRequest(
       `${baseUrl}/chats`,
       JSON.stringify({ firstId, secondId })

@@ -12,6 +12,13 @@ type ErrorType = {
   message: string;
 };
 
+export type UserChatsType = userChatType[];
+
+export type userChatType = {
+  _id: string;
+  members: string[];
+};
+
 export type AuthContextType = {
   user: UserType | null;
   registerInfo: UserType;
@@ -30,7 +37,8 @@ export type AuthContextType = {
 };
 
 export type ChatContextType = {
-  userChats: string[] | null;
+  potentialChats: UserChatsType;
+  userChats: UserChatsType | null;
   userChatsError: ErrorType | null;
   isUserChatsLoading: boolean;
 };
