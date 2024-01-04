@@ -1,5 +1,6 @@
 export type UserType = {
   id?: string;
+  _id?: string;
   name: string;
   email: string;
   password: string;
@@ -37,8 +38,9 @@ export type AuthContextType = {
 };
 
 export type ChatContextType = {
-  potentialChats: UserChatsType;
+  potentialChats: UserType[];
   userChats: UserChatsType | null;
   userChatsError: ErrorType | null;
   isUserChatsLoading: boolean;
+  createChat: (firstId: string, secondId: string) => Promise<void>;
 };

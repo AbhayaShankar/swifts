@@ -2,9 +2,7 @@ import React, { useContext } from "react";
 import { ChatContext } from "../../context/ChatContext";
 import { AuthContext } from "../../context/AuthContext";
 
-interface PotentialChatsProps {}
-
-const PotentialChats: React.FC<PotentialChatsProps> = () => {
+const PotentialChats: React.FC = () => {
   const { user } = useContext(AuthContext);
   const { potentialChats, createChat } = useContext(ChatContext);
   console.log("Potential Chats", potentialChats);
@@ -18,7 +16,7 @@ const PotentialChats: React.FC<PotentialChatsProps> = () => {
               <div
                 key={index}
                 className="single-user"
-                onClick={() => createChat(user?.id, u._id)}
+                onClick={() => user?.id && u._id && createChat(user?.id, u._id)}
               >
                 {u.name}
                 <span className="user-online"></span>

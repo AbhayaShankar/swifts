@@ -1,9 +1,15 @@
 import React from "react";
 import { useFetchRecipientUser } from "../../hooks/useFetchRecipients";
 import avatar from "../../assets/avatar.svg";
+import { UserType, userChatType } from "../../types";
 
-const UserChat: React.FC = ({ chat, user }) => {
-  const { recipientUser } = useFetchRecipientUser(chat, user);
+interface UserChatInterface {
+  chat: userChatType | null;
+  user: UserType | null;
+}
+
+const UserChat: React.FC<UserChatInterface> = ({ chat, user }) => {
+  const { recipientUser } = useFetchRecipientUser({ chat, user });
 
   console.log("Recipient User", recipientUser);
 

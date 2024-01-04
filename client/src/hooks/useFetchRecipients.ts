@@ -1,12 +1,21 @@
 import { useState, useEffect } from "react";
 import { baseUrl, getRequest } from "../utils/services";
+import { UserType, userChatType } from "../types";
 
-export const useFetchRecipientUser = (chat, user) => {
-  const [recipientUser, setRecipientUser] = useState(null);
-  const [error, setError] = useState(null);
+interface UseFetchRecipientUserProps {
+  chat: userChatType | null;
+  user: UserType | null;
+}
 
-  const recipientId: string = chat?.members.find(
-    (id: string) => id !== user?.id
+export const useFetchRecipientUser = ({
+  chat,
+  user,
+}: UseFetchRecipientUserProps) => {
+  const [recipientUser, setRecipientUser] = useState<UserType | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+
+  const recipientId: string | undefined = chat?.members.find(
+    (id) => id !== user?.id
   );
 
   useEffect(() => {
@@ -23,7 +32,7 @@ export const useFetchRecipientUser = (chat, user) => {
     };
 
     getUser();
-  }, []);
+  }, [recipientId]);
 
-  return { recipientUser };
+  return { recipientUser, error };
 };

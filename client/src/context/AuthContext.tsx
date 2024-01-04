@@ -3,9 +3,6 @@ import { createContext, useCallback, useEffect, useState } from "react";
 import { AuthContextType, LoginUserType, UserType } from "../types";
 import { baseUrl, postRequest } from "../utils/services";
 
-// type TUserContext = [UserType[], React.Dispatch<React.SetStateAction<UserType[]>>];
-// export const AuthContext = createContext<TUserContext>([[], () => null]);
-
 export const AuthContext = createContext({} as AuthContextType);
 
 export const AuthContextProvider = ({
