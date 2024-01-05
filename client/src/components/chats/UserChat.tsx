@@ -11,8 +11,6 @@ interface UserChatInterface {
 const UserChat: React.FC<UserChatInterface> = ({ chat, user }) => {
   const { recipientUser } = useFetchRecipientUser({ chat, user });
 
-  console.log("Recipient User", recipientUser);
-
   return (
     <div className="user-card flex justify-between px-2 py-3 mb-1 hover:bg-white/[0.02] animate duration-150 ease-in cursor-pointer">
       <div className="flex">

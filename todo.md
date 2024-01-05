@@ -1,4 +1,7 @@
 - [ ] Optimize code.
+- [ ] Performance Optimise.
+- [ ] SEO Best practices.
+- [ ] Typescript best practices followed or not.
 - [ ] Work on Design.
 - [ ] Check for Types Error
 - [ ] Understand End-to-end codebase.

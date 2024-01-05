@@ -4,13 +4,13 @@ import UserChat from "../components/chats/UserChat";
 import { AuthContext } from "../context/AuthContext";
 import PotentialChats from "../components/chats/PotentialChats";
 import { UserChatsType } from "../types";
+import ChatBox from "../components/chats/ChatBox";
 
 const Chat: React.FC = () => {
   const { user } = useContext(AuthContext);
 
-  const { userChats, isUserChatsLoading } = useContext(ChatContext);
-
-  // console.log("User Chats", userChats);
+  const { userChats, isUserChatsLoading, updateCurrentChat } =
+    useContext(ChatContext);
 
   return (
     <div className="py-5">
@@ -22,12 +22,16 @@ const Chat: React.FC = () => {
               <p className="animate-pulse">Loading chats...</p>
             )}
             {userChats?.map((chat, index) => (
-              <div className="" key={index}>
+              <div
+                onClick={() => updateCurrentChat(chat)}
+                className=""
+                key={index}
+              >
                 <UserChat chat={chat} user={user} />
               </div>
             ))}
           </div>
-          <div>ChatBox</div>
+          <ChatBox />
         </div>
       )}
     </div>

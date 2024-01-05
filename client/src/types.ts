@@ -20,6 +20,15 @@ export type userChatType = {
   members: string[];
 };
 
+export type MessageType = {
+  _id: string;
+  chatId: string;
+  senderId: string;
+  text: string;
+};
+
+export type MessagesType = MessageType[];
+
 export type AuthContextType = {
   user: UserType | null;
   registerInfo: UserType;
@@ -40,7 +49,12 @@ export type AuthContextType = {
 export type ChatContextType = {
   potentialChats: UserType[];
   userChats: UserChatsType | null;
+  currentChat: userChatType | null;
   userChatsError: ErrorType | null;
   isUserChatsLoading: boolean;
   createChat: (firstId: string, secondId: string) => Promise<void>;
+  updateCurrentChat: (chat: userChatType) => void;
+  messages: MessagesType | null;
+  isMessagesLoading: boolean;
+  messagesError: ErrorType | null;
 };
