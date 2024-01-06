@@ -9,7 +9,7 @@ const Wrapper: React.FC<WrapperProps> = ({ children }) => {
   return (
     <div>
       <Navbar />
-      <div className="w-full h-full px-48">{children}</div>
+      <div className="w-full h-full px-20">{children}</div>
     </div>
   );
 };

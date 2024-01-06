@@ -27,6 +27,8 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
   const [messages, setMessages] = useState(null);
   const [isMessagesLoading, setIsMessagesLoading] = useState(false);
   const [messagesError, setMessagesError] = useState(null);
+  const [sendTextMessageError, setSendTextMessageError] = useState(null);
+  const [newMessage, setNewMessage] = useState(null);
 
   console.log("Current Chat", currentChat);
   console.log("Messages", messages);
@@ -105,6 +107,31 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
     getMessages();
   }, [currentChat?._id, user]);
 
+  // create/send a message
+  const sendTextMessage = useCallback(
+    async (textMessage, sender, currentChatId, setTextMessage) => {
+      if (!textMessage) return console.log("Error - No text Message Found");
+
+      const response = await postRequest(
+        `${baseUrl}/messages`,
+        JSON.stringify({
+          chatId: currentChatId,
+          senderId: sender,
+          text: textMessage,
+        })
+      );
+
+      if (response.error) {
+        return setSendTextMessageError(response);
+      }
+
+      setNewMessage(response);
+      setMessages((prev) => [...prev, response]);
+      setTextMessage("");
+    },
+    []
+  );
+
   // Create a chat between users
   const createChat = useCallback(async (firstId: string, secondId: string) => {
     const response = await postRequest(
@@ -136,6 +163,7 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
         isMessagesLoading,
         messagesError,
         currentChat,
+        sendTextMessage,
       }}
     >
       {children}

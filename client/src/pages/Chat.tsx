@@ -16,7 +16,7 @@ const Chat: React.FC = () => {
     <div className="py-5">
       <PotentialChats />
       {(userChats as UserChatsType)?.length < 1 ? null : (
-        <div className="flex items-center gap-5">
+        <div className="flex gap-5">
           <div className="pr-4 my-5">
             {isUserChatsLoading && (
               <p className="animate-pulse">Loading chats...</p>

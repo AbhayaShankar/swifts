@@ -25,6 +25,7 @@ export type MessageType = {
   chatId: string;
   senderId: string;
   text: string;
+  createdAt: Date;
 };
 
 export type MessagesType = MessageType[];
