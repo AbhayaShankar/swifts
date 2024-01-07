@@ -8,6 +8,7 @@ import {
   userChatType,
 } from "../types";
 import { baseUrl, getRequest, postRequest } from "../utils/services";
+import { io } from "socket.io-client";
 
 interface ChatContextProps {
   children: React.ReactNode;
@@ -32,9 +33,32 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
   const [sendTextMessageError, setSendTextMessageError] =
     useState<ErrorType | null>(null);
   const [newMessage, setNewMessage] = useState(null);
+  const [socket, setSocket] = useState(null);
+  const [onlineUsers, setOnlineUsers] = useState([]);
 
-  console.log("Current Chat", currentChat);
-  console.log("Messages", messages);
+  console.log("online Users", onlineUsers);
+
+  // Initializing Socket
+
+  useEffect(() => {
+    const newSocket = io("http://localhost:3000");
+    setSocket(newSocket);
+
+    // Cleanup for socket incase we try to create connection again, we remove the existing connection...
+    return () => {
+      newSocket.disconnect();
+    };
+  }, [user]);
+
+  // Fire the addNewUser Event which we created in socket
+  useEffect(() => {
+    if (socket === null) return;
+    socket.emit("addNewUser", user?.id);
+
+    socket.on("getOnlineUsers", (res) => {
+      setOnlineUsers(res);
+    });
+  }, [socket]);
 
   // Get Users who donot have a chat with Logged in user yet.
   useEffect(() => {
@@ -172,6 +196,7 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
         messagesError,
         currentChat,
         sendTextMessage,
+        onlineUsers,
       }}
     >
       {children}
