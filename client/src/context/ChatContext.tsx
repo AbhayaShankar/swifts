@@ -58,6 +58,10 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
     socket.on("getOnlineUsers", (res) => {
       setOnlineUsers(res);
     });
+
+    return () => {
+      socket.off("getOnlineUsers");
+    };
   }, [socket]);
 
   // Get Users who donot have a chat with Logged in user yet.

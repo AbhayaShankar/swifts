@@ -14,6 +14,10 @@ const UserChat: React.FC<UserChatInterface> = ({ chat, user }) => {
 
   const { onlineUsers } = useContext(ChatContext);
 
+  const isOnline = onlineUsers?.some(
+    (user) => user?.userId === recipientUser?._id
+  );
+
   return (
     <div className="user-card flex justify-between px-2 py-3 mb-1 hover:bg-white/[0.02] animate duration-150 ease-in cursor-pointer">
       <div className="flex">
@@ -30,13 +34,7 @@ const UserChat: React.FC<UserChatInterface> = ({ chat, user }) => {
       <div className="flex flex-col items-end">
         <div className="date mb-1">01/03/2024</div>
         <div className="this-user-notifications">2</div>
-        <span
-          className={`${
-            onlineUsers?.some((user) => user?.userId === user?._id)
-              ? "user-online"
-              : ""
-          }`}
-        ></span>
+        <span className={`${isOnline ? "user-online" : ""}`}></span>
       </div>
     </div>
   );
