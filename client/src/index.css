@@ -18,6 +18,24 @@ body {
   background: #242424;
 }
 
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background-color: rgb(25, 25, 25);
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3.5px solid rgba(0, 0, 0, 0);
+  background-color: rgb(36, 36, 36);
+  background-clip: padding-box;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(52, 52, 52);
+}
+
 .swift {
   font-family: "Sacramento", cursive !important;
 }
@@ -117,9 +135,9 @@ body {
 
 /* Chat Input  */
 .chat-input {
-  width: 100%;
+  max-width: 100%;
   background: rgb(30, 30, 30);
-  padding: 1rem;
+  padding: 1rem 1.9rem 1rem 1rem;
 }
 .send-btn {
   border: none;

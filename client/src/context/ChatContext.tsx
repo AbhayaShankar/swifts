@@ -1,6 +1,8 @@
 import React, { createContext, useCallback, useEffect, useState } from "react";
 import {
   ChatContextType,
+  ErrorType,
+  MessagesType,
   UserChatsType,
   UserType,
   userChatType,
@@ -18,16 +20,17 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
   children,
   user,
 }) => {
-  const [userChats, setUserChats] = useState(null);
-  const [isUserChatsLoading, setIsUserChatsLoading] = useState(false);
-  const [userChatsError, setUserChatsError] = useState(null);
-  const [potentialChats, setPotentialChats] = useState([]);
+  const [userChats, setUserChats] = useState<UserChatsType | null>(null);
+  const [isUserChatsLoading, setIsUserChatsLoading] = useState<boolean>(false);
+  const [userChatsError, setUserChatsError] = useState<ErrorType | null>(null);
+  const [potentialChats, setPotentialChats] = useState<UserType[]>([]);
   const [currentChat, setCurrentChat] = useState<userChatType | null>(null);
 
-  const [messages, setMessages] = useState(null);
-  const [isMessagesLoading, setIsMessagesLoading] = useState(false);
-  const [messagesError, setMessagesError] = useState(null);
-  const [sendTextMessageError, setSendTextMessageError] = useState(null);
+  const [messages, setMessages] = useState<MessagesType | null>(null);
+  const [isMessagesLoading, setIsMessagesLoading] = useState<boolean>(false);
+  const [messagesError, setMessagesError] = useState<ErrorType | null>(null);
+  const [sendTextMessageError, setSendTextMessageError] =
+    useState<ErrorType | null>(null);
   const [newMessage, setNewMessage] = useState(null);
 
   console.log("Current Chat", currentChat);
@@ -109,7 +112,12 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
 
   // create/send a message
   const sendTextMessage = useCallback(
-    async (textMessage, sender, currentChatId, setTextMessage) => {
+    async (
+      textMessage: string,
+      sender: string | undefined,
+      currentChatId: string | undefined,
+      setTextMessage: React.Dispatch<React.SetStateAction<string>>
+    ) => {
       if (!textMessage) return console.log("Error - No text Message Found");
 
       const response = await postRequest(

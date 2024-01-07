@@ -8,7 +8,7 @@ export type UserType = {
 
 export type LoginUserType = Omit<UserType, "name">;
 
-type ErrorType = {
+export type ErrorType = {
   error: boolean;
   message: string;
 };
@@ -58,4 +58,10 @@ export type ChatContextType = {
   messages: MessagesType | null;
   isMessagesLoading: boolean;
   messagesError: ErrorType | null;
+  sendTextMessage: (
+    textMessage: string,
+    sender: string | undefined,
+    currentChatId: string | undefined,
+    setTextMessage: React.Dispatch<React.SetStateAction<string>>
+  ) => Promise<void>;
 };
