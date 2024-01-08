@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { createContext, useCallback, useEffect, useState } from "react";
 import {
   ChatContextType,
@@ -8,7 +9,8 @@ import {
   userChatType,
 } from "../types";
 import { baseUrl, getRequest, postRequest } from "../utils/services";
-import { io } from "socket.io-client";
+import { Socket, io } from "socket.io-client";
+import { DefaultEventsMap } from "@socket.io/component-emitter";
 
 interface ChatContextProps {
   children: React.ReactNode;
@@ -33,7 +35,10 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
   const [sendTextMessageError, setSendTextMessageError] =
     useState<ErrorType | null>(null);
   const [newMessage, setNewMessage] = useState(null);
-  const [socket, setSocket] = useState(null);
+  const [socket, setSocket] = useState<Socket<
+    DefaultEventsMap,
+    DefaultEventsMap
+  > | null>(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
 
   console.log("online Users", onlineUsers);
@@ -62,7 +67,7 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
     return () => {
       socket.off("getOnlineUsers");
     };
-  }, [socket]);
+  }, [socket, user?.id]);
 
   // Get Users who donot have a chat with Logged in user yet.
   useEffect(() => {

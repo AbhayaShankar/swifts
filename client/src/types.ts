@@ -30,6 +30,13 @@ export type MessageType = {
 
 export type MessagesType = MessageType[];
 
+export type OnlineUserType = {
+  userId: string;
+  socketId: string;
+};
+
+export type OnlineUsersType = OnlineUserType[];
+
 export type AuthContextType = {
   user: UserType | null;
   registerInfo: UserType;
@@ -64,4 +71,5 @@ export type ChatContextType = {
     currentChatId: string | undefined,
     setTextMessage: React.Dispatch<React.SetStateAction<string>>
   ) => Promise<void>;
+  onlineUsers: OnlineUsersType;
 };
