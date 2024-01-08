@@ -3,6 +3,7 @@ import React, { createContext, useCallback, useEffect, useState } from "react";
 import {
   ChatContextType,
   ErrorType,
+  MessageType,
   MessagesType,
   UserChatsType,
   UserType,
@@ -34,7 +35,7 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
   const [messagesError, setMessagesError] = useState<ErrorType | null>(null);
   const [sendTextMessageError, setSendTextMessageError] =
     useState<ErrorType | null>(null);
-  const [newMessage, setNewMessage] = useState(null);
+  const [newMessage, setNewMessage] = useState<MessageType | null>(null);
   const [socket, setSocket] = useState<Socket<
     DefaultEventsMap,
     DefaultEventsMap
@@ -68,6 +69,31 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
       socket.off("getOnlineUsers");
     };
   }, [socket, user?.id]);
+
+  // send realtime message using socket
+  useEffect(() => {
+    if (socket === null) return;
+
+    const recipientId: string | undefined = currentChat?.members.find(
+      (id) => id !== user?.id
+    );
+
+    socket.emit("sendMessage", { ...newMessage, recipientId });
+  }, [currentChat?.members, newMessage, socket, user?.id]);
+
+  // Receive Message
+  useEffect(() => {
+    if (socket === null) return;
+
+    socket.on("getMessage", (res) => {
+      if (currentChat?._id !== res.chatId) return;
+      setMessages((prev) => [...prev, res]);
+    });
+
+    return () => {
+      socket.off("getMessage");
+    };
+  }, [socket, currentChat]);
 
   // Get Users who donot have a chat with Logged in user yet.
   useEffect(() => {
