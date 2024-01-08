@@ -50,7 +50,7 @@ export const AuthContextProvider = ({
   // Register User Logic
   const registerUser = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async (e: any) => {
+    async (e: React.FormEvent<HTMLInputElement>) => {
       e.preventDefault();
       setIsRegisterLoading(true);
       setRegisterError(null);
@@ -75,7 +75,7 @@ export const AuthContextProvider = ({
 
   const loginUser = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async (e: any) => {
+    async (e: React.FormEvent<HTMLInputElement>) => {
       e.preventDefault();
       setIsLoginLoading(true);
       setLoginError(null);

@@ -44,10 +44,8 @@ export type AuthContextType = {
   updateRegisterInfo: (info: UserType) => void;
   registerError: ErrorType | null;
   isRegisterLoading: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  registerUser: (e: any) => Promise<void>;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  loginUser: (e: any) => Promise<void>;
+  registerUser: (e: React.FormEvent<HTMLInputElement>) => Promise<void>;
+  loginUser: (e: React.FormEvent<HTMLInputElement>) => Promise<void>;
   updateLoginInfo: (info: LoginUserType) => void;
   loginError: ErrorType | null;
   isLoginLoading: boolean;
@@ -72,4 +70,5 @@ export type ChatContextType = {
     setTextMessage: React.Dispatch<React.SetStateAction<string>>
   ) => Promise<void>;
   onlineUsers: OnlineUsersType;
+  sendTextMessageError: ErrorType | null;
 };

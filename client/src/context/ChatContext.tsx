@@ -232,6 +232,7 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
         currentChat,
         sendTextMessage,
         onlineUsers,
+        sendTextMessageError,
       }}
     >
       {children}
