@@ -37,6 +37,14 @@ export type OnlineUserType = {
 
 export type OnlineUsersType = OnlineUserType[];
 
+export type NotificationType = {
+  senderId: string;
+  isRead: boolean;
+  date: Date;
+};
+
+export type NotificationsType = NotificationType[];
+
 export type AuthContextType = {
   user: UserType | null;
   registerInfo: UserType;
@@ -71,4 +79,5 @@ export type ChatContextType = {
   ) => Promise<void>;
   onlineUsers: OnlineUsersType;
   sendTextMessageError: ErrorType | null;
+  notifications: NotificationsType;
 };

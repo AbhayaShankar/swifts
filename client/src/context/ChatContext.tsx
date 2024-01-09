@@ -5,6 +5,7 @@ import {
   ErrorType,
   MessageType,
   MessagesType,
+  NotificationsType,
   UserChatsType,
   UserType,
   userChatType,
@@ -41,8 +42,10 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
     DefaultEventsMap
   > | null>(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [notifications, setNotifications] = useState<NotificationsType>([]);
 
   console.log("online Users", onlineUsers);
+  console.log("notifications", notifications);
 
   // Initializing Socket
 
@@ -81,7 +84,7 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
     socket.emit("sendMessage", { ...newMessage, recipientId });
   }, [currentChat?.members, newMessage, socket, user?.id]);
 
-  // Receive Message
+  // Receive Message and Notifications
   useEffect(() => {
     if (socket === null) return;
 
@@ -90,8 +93,19 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
       setMessages((prev) => [...prev, res]);
     });
 
+    socket.on("getNotification", (res) => {
+      const isChatOpen = currentChat?.members.some((id) => id === res.senderId);
+
+      if (isChatOpen) {
+        setNotifications((prev) => [{ ...res, isRead: true }, ...prev]);
+      } else {
+        setNotifications((prev) => [res, ...prev]);
+      }
+    });
+
     return () => {
       socket.off("getMessage");
+      socket.off("getNotification");
     };
   }, [socket, currentChat]);
 
@@ -233,6 +247,7 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
         sendTextMessage,
         onlineUsers,
         sendTextMessageError,
+        notifications,
       }}
     >
       {children}
