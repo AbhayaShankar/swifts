@@ -42,7 +42,10 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
     DefaultEventsMap
   > | null>(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
-  const [notifications, setNotifications] = useState<NotificationsType>([]);
+  const [notifications, setNotifications] = useState<NotificationsType | []>(
+    []
+  );
+  const [allUsers, setAllUsers] = useState<UserType[]>([]);
 
   console.log("online Users", onlineUsers);
   console.log("notifications", notifications);
@@ -82,7 +85,7 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
     );
 
     socket.emit("sendMessage", { ...newMessage, recipientId });
-  }, [currentChat?.members, newMessage, socket, user?.id]);
+  }, [newMessage, user?.id]);
 
   // Receive Message and Notifications
   useEffect(() => {
@@ -134,6 +137,7 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
       });
 
       setPotentialChats(pChats);
+      setAllUsers(response);
     };
 
     getUsers();
@@ -248,6 +252,7 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
         onlineUsers,
         sendTextMessageError,
         notifications,
+        allUsers,
       }}
     >
       {children}

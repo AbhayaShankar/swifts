@@ -13,11 +13,11 @@ const ChatBox: React.FC = () => {
   const [textMessage, setTextMessage] = useState("");
   const scrollToView = useRef<HTMLDivElement | null>(null);
 
-  console.log("text Message", textMessage);
+  // console.log("text Message", textMessage);
 
   useEffect(() => {
     scrollToView.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, currentChat]);
 
   if (!recipientUser) {
     return (

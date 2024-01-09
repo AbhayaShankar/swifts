@@ -80,4 +80,5 @@ export type ChatContextType = {
   onlineUsers: OnlineUsersType;
   sendTextMessageError: ErrorType | null;
   notifications: NotificationsType;
+  allUsers: UserType[];
 };

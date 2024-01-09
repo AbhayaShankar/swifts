@@ -1,13 +1,14 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import Notification from "./Notification";
 
 interface NavbarProps {}
 
 const Navbar: React.FC<NavbarProps> = () => {
   const { user, logoutUser } = React.useContext(AuthContext);
   return (
-    <div className="px-10 py-3 border-white/20 border-b-[1px]">
+    <div className="px-10 py-4 border-white/20 border-b-[1px]">
       <div className="flex items-center justify-between h-6">
         <h1 className="text-big swift tracking-wider">
           <Link to={"/"}>Swifts Chat</Link>
@@ -22,6 +23,7 @@ const Navbar: React.FC<NavbarProps> = () => {
           </h2>
         )}
         <div className="flex items-center gap-10 tracking-wider">
+          <Notification />
           {user && (
             <Link
               onClick={() => logoutUser()}
