@@ -68,9 +68,7 @@ const Notification: React.FC = () => {
               <div
                 key={index}
                 className={
-                  notif.isRead
-                    ? "notification line"
-                    : "notification not-read line"
+                  notif.isRead ? "notification" : "notification not-read"
                 }
                 onClick={() => {
                   openChatFromNotification(

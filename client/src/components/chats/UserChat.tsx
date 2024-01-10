@@ -3,6 +3,8 @@ import { useFetchRecipientUser } from "../../hooks/useFetchRecipients";
 import avatar from "../../assets/avatar.svg";
 import { UserType, userChatType } from "../../types";
 import { ChatContext } from "../../context/ChatContext";
+import { unreadNotificationsFunc } from "../../utils/unreadNotifications";
+import { momentDate } from "../../utils/momentDate";
 
 interface UserChatInterface {
   chat: userChatType | null;
@@ -11,12 +13,21 @@ interface UserChatInterface {
 
 const UserChat: React.FC<UserChatInterface> = ({ chat, user }) => {
   const { recipientUser } = useFetchRecipientUser({ chat, user });
-
-  const { onlineUsers } = useContext(ChatContext);
+  const { onlineUsers, notifications, messages } = useContext(ChatContext);
 
   const isOnline = onlineUsers?.some(
     (user) => user?.userId === recipientUser?._id
   );
+
+  const unreadNotifications = unreadNotificationsFunc(notifications);
+
+  const individualMessages = messages?.filter((msg) => {
+    return msg.senderId === recipientUser?._id;
+  });
+
+  const individualUserNotification = unreadNotifications.filter((notif) => {
+    return notif.senderId === recipientUser?._id;
+  });
 
   return (
     <div className="user-card flex justify-between px-2 py-3 mb-1 hover:bg-white/[0.02] animate duration-150 ease-in cursor-pointer">
@@ -28,12 +39,28 @@ const UserChat: React.FC<UserChatInterface> = ({ chat, user }) => {
           <div className="name capitalize font-medium">
             {recipientUser?.name}
           </div>
-          <div className="text">Text Message</div>
+          <div className="text">
+            {individualMessages?.length
+              ? individualMessages[individualMessages.length - 1].text
+              : ""}
+          </div>
         </div>
       </div>
       <div className="flex flex-col items-end">
-        <div className="date mb-1">01/03/2024</div>
-        <div className="this-user-notifications">2</div>
+        <div className="date mb-1">
+          {individualUserNotification.length
+            ? momentDate(individualUserNotification[0].date)
+            : ""}
+        </div>
+        <div
+          className={
+            individualUserNotification.length ? "this-user-notifications" : ""
+          }
+        >
+          {individualUserNotification.length
+            ? individualUserNotification.length
+            : ""}
+        </div>
         <span className={`${isOnline ? "user-online" : ""}`}></span>
       </div>
     </div>

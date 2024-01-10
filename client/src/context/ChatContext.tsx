@@ -51,6 +51,7 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
 
   console.log("online Users", onlineUsers);
   console.log("notifications", notifications);
+  console.log("messages", messages);
 
   // Initializing Socket
 
