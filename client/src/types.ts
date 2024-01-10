@@ -43,6 +43,13 @@ export type NotificationType = {
   date: Date;
 };
 
+export type openChatFromNotificationType = {
+  clickedNotif: NotificationType;
+  userChats: UserChatsType;
+  user: UserType;
+  notifications: NotificationsType;
+};
+
 export type NotificationsType = NotificationType[];
 
 export type AuthContextType = {
@@ -83,4 +90,10 @@ export type ChatContextType = {
   allUsers: UserType[];
   markAllNotificationAsRead: (notifications: NotificationsType) => void;
   clearNotifications: () => void;
+  openChatFromNotification: (
+    clickedNotif: NotificationType,
+    userChats: UserChatsType,
+    user: UserType,
+    notifications: NotificationsType
+  ) => void;
 };

@@ -9,10 +9,11 @@ const Notification: React.FC = () => {
   const { user } = useContext(AuthContext);
   const {
     notifications,
-    currentChat,
+    userChats,
     allUsers,
     markAllNotificationAsRead,
     clearNotifications,
+    openChatFromNotification,
   } = useContext(ChatContext);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -71,6 +72,15 @@ const Notification: React.FC = () => {
                     ? "notification line"
                     : "notification not-read line"
                 }
+                onClick={() => {
+                  openChatFromNotification(
+                    notif,
+                    userChats,
+                    user,
+                    notifications
+                  ),
+                    setIsOpen(false);
+                }}
               >
                 <span>{notif.senderName} sent you a new message</span>
                 <span className="notification-time">

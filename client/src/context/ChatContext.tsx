@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { createContext, useCallback, useEffect, useState } from "react";
 import {
@@ -5,6 +6,7 @@ import {
   ErrorType,
   MessageType,
   MessagesType,
+  NotificationType,
   NotificationsType,
   UserChatsType,
   UserType,
@@ -251,6 +253,46 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
     setNotifications([]);
   }, []);
 
+  const openChatFromNotification = useCallback(
+    (
+      clickedNotif: NotificationType,
+      userChats: UserChatsType,
+      user: UserType,
+      notifications: NotificationsType
+    ) => {
+      // find  chat to open
+      const desiredChat =
+        userChats &&
+        userChats.find((chat) => {
+          const chatMembers = [user?.id, clickedNotif?.senderId];
+
+          const isDesired = chat?.members.every((member) => {
+            return chatMembers.includes(member);
+          });
+
+          return isDesired;
+        });
+
+      if (!desiredChat) {
+        console.error("Desired chat not found");
+        return;
+      }
+
+      // mark notification as read.
+      const mNotification = notifications.map((el) => {
+        if (clickedNotif.senderId === el.senderId) {
+          return { ...clickedNotif, isRead: true };
+        } else {
+          return el;
+        }
+      });
+
+      updateCurrentChat(desiredChat);
+      setNotifications(mNotification);
+    },
+    []
+  );
+
   return (
     <ChatContext.Provider
       value={{
@@ -271,6 +313,7 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
         allUsers,
         markAllNotificationAsRead,
         clearNotifications,
+        openChatFromNotification,
       }}
     >
       {children}
