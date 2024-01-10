@@ -45,8 +45,8 @@ export type NotificationType = {
 
 export type openChatFromNotificationType = {
   clickedNotif: NotificationType;
-  userChats: UserChatsType;
-  user: UserType;
+  userChats: UserChatsType | null;
+  user: UserType | null;
   notifications: NotificationsType;
 };
 
@@ -92,8 +92,8 @@ export type ChatContextType = {
   clearNotifications: () => void;
   openChatFromNotification: (
     clickedNotif: NotificationType,
-    userChats: UserChatsType,
-    user: UserType,
+    userChats: UserChatsType | null,
+    user: UserType | null,
     notifications: NotificationsType
   ) => void;
 };

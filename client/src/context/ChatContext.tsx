@@ -256,8 +256,8 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
   const openChatFromNotification = useCallback(
     (
       clickedNotif: NotificationType,
-      userChats: UserChatsType,
-      user: UserType,
+      userChats: UserChatsType | null,
+      user: UserType | null,
       notifications: NotificationsType
     ) => {
       // find  chat to open
