@@ -81,4 +81,6 @@ export type ChatContextType = {
   sendTextMessageError: ErrorType | null;
   notifications: NotificationsType;
   allUsers: UserType[];
+  markAllNotificationAsRead: (notifications: NotificationsType) => void;
+  clearNotifications: () => void;
 };

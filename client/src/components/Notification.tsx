@@ -7,7 +7,13 @@ import moment from "moment";
 
 const Notification: React.FC = () => {
   const { user } = useContext(AuthContext);
-  const { notifications, currentChat, allUsers } = useContext(ChatContext);
+  const {
+    notifications,
+    currentChat,
+    allUsers,
+    markAllNotificationAsRead,
+    clearNotifications,
+  } = useContext(ChatContext);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const unreadNotifications = unreadNotificationsFunc(notifications);
@@ -46,7 +52,12 @@ const Notification: React.FC = () => {
           <div className="drop-down"></div>
           <div className="notifications-header mb-1">
             <h3>Notifications</h3>
-            <div className="mark-as-read">Mark all as read</div>
+            <div
+              className="mark-as-read"
+              onClick={() => markAllNotificationAsRead(notifications)}
+            >
+              Mark all as read
+            </div>
           </div>
           {modifiedNotifications?.length === 0 ? (
             <span className="notification">No Unread Notifications...</span>
@@ -67,6 +78,12 @@ const Notification: React.FC = () => {
                 </span>
               </div>
             ))}
+          <div
+            className="flex justify-end cursor-pointer pr-1 mark-as-read hover:brightness-150"
+            onClick={() => clearNotifications()}
+          >
+            Clear
+          </div>
         </div>
       ) : null}
     </div>

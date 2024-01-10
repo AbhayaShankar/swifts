@@ -235,6 +235,22 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
     setCurrentChat(chat);
   }, []);
 
+  const markAllNotificationAsRead = useCallback(
+    (notifications: NotificationsType) => {
+      const mNotifications = notifications.map((notif) => ({
+        ...notif,
+        isRead: true,
+      }));
+
+      setNotifications(mNotifications);
+    },
+    []
+  );
+
+  const clearNotifications = useCallback(() => {
+    setNotifications([]);
+  }, []);
+
   return (
     <ChatContext.Provider
       value={{
@@ -253,6 +269,8 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
         sendTextMessageError,
         notifications,
         allUsers,
+        markAllNotificationAsRead,
+        clearNotifications,
       }}
     >
       {children}
