@@ -332,6 +332,7 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
         isMessagesLoading,
         messagesError,
         currentChat,
+        newMessage,
         sendTextMessage,
         onlineUsers,
         sendTextMessageError,

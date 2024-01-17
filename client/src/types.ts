@@ -18,6 +18,7 @@ export type UserChatsType = userChatType[];
 export type userChatType = {
   _id: string;
   members: string[];
+  createdAt: Date | undefined;
 };
 
 export type MessageType = {
@@ -100,4 +101,5 @@ export type ChatContextType = {
     individualUserNotification: NotificationsType,
     notifications: NotificationsType
   ) => void;
+  newMessage: MessageType | null;
 };

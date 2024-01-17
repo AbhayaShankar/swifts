@@ -5,6 +5,7 @@ import { UserType, userChatType } from "../../types";
 import { ChatContext } from "../../context/ChatContext";
 import { unreadNotificationsFunc } from "../../utils/unreadNotifications";
 import { momentDate } from "../../utils/momentDate";
+import { useFetchLatestMessage } from "../../hooks/useFetchLatestMessage";
 
 interface UserChatInterface {
   chat: userChatType | null;
@@ -13,23 +14,26 @@ interface UserChatInterface {
 
 const UserChat: React.FC<UserChatInterface> = ({ chat, user }) => {
   const { recipientUser } = useFetchRecipientUser({ chat, user });
-  const {
-    onlineUsers,
-    notifications,
-    messages,
-    markSelectedNotificationsAsRead,
-  } = useContext(ChatContext);
+  const { onlineUsers, notifications, markSelectedNotificationsAsRead } =
+    useContext(ChatContext);
+
+  const { latestMessage } = useFetchLatestMessage(chat);
+
+  const trimmedText = (text: string) => {
+    let trimText = text.substring(0, 20);
+
+    if (text.length > 20) {
+      trimText = trimText + "...";
+    }
+
+    return trimText;
+  };
 
   const isOnline = onlineUsers?.some(
     (user) => user?.userId === recipientUser?._id
   );
 
   const unreadNotifications = unreadNotificationsFunc(notifications);
-
-  // Latest Messages from a user.
-  const individualMessages = messages?.filter((msg) => {
-    return msg.senderId === recipientUser?._id;
-  });
 
   // unreadNotif... contains all the unread notifications for the user. We want to display unread notif for all the users who have sent a message.
   const individualUserNotification = unreadNotifications.filter((notif) => {
@@ -57,18 +61,14 @@ const UserChat: React.FC<UserChatInterface> = ({ chat, user }) => {
             {recipientUser?.name}
           </div>
           <div className="text">
-            {individualMessages?.length
-              ? individualMessages[individualMessages.length - 1].text
-              : ""}
+            {latestMessage
+              ? trimmedText(latestMessage?.text)
+              : "Start a conversation..."}
           </div>
         </div>
       </div>
       <div className="flex flex-col items-end">
-        <div className="date mb-1">
-          {individualUserNotification.length
-            ? momentDate(individualUserNotification[0].date)
-            : ""}
-        </div>
+        <div className="date mb-1">{momentDate(latestMessage?.createdAt)}</div>
         <div
           className={
             individualUserNotification.length ? "this-user-notifications" : ""
