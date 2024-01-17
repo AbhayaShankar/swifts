@@ -96,4 +96,8 @@ export type ChatContextType = {
     user: UserType | null,
     notifications: NotificationsType
   ) => void;
+  markSelectedNotificationsAsRead: (
+    individualUserNotification: NotificationsType,
+    notifications: NotificationsType
+  ) => void;
 };

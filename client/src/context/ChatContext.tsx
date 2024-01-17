@@ -279,7 +279,7 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
         return;
       }
 
-      // mark notification as read.
+      // mark clicked notification as read.
       const mNotification = notifications.map((el) => {
         if (clickedNotif.senderId === el.senderId) {
           return { ...clickedNotif, isRead: true };
@@ -290,6 +290,31 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
 
       updateCurrentChat(desiredChat);
       setNotifications(mNotification);
+    },
+    []
+  );
+
+  const markSelectedNotificationsAsRead = useCallback(
+    (
+      individualUserNotification: NotificationsType,
+      notifications: NotificationsType
+    ) => {
+      // mark notif as read
+
+      const mNotifications = notifications.map((notif) => {
+        let notification;
+
+        individualUserNotification?.forEach((n) => {
+          if (n.senderId === notif.senderId) {
+            notification = { ...n, isRead: true };
+          } else {
+            notification = notif;
+          }
+        });
+        return notification;
+      });
+
+      setNotifications(mNotifications);
     },
     []
   );
@@ -315,6 +340,7 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
         markAllNotificationAsRead,
         clearNotifications,
         openChatFromNotification,
+        markSelectedNotificationsAsRead,
       }}
     >
       {children}

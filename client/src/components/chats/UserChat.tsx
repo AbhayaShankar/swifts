@@ -13,7 +13,12 @@ interface UserChatInterface {
 
 const UserChat: React.FC<UserChatInterface> = ({ chat, user }) => {
   const { recipientUser } = useFetchRecipientUser({ chat, user });
-  const { onlineUsers, notifications, messages } = useContext(ChatContext);
+  const {
+    onlineUsers,
+    notifications,
+    messages,
+    markSelectedNotificationsAsRead,
+  } = useContext(ChatContext);
 
   const isOnline = onlineUsers?.some(
     (user) => user?.userId === recipientUser?._id
@@ -21,16 +26,28 @@ const UserChat: React.FC<UserChatInterface> = ({ chat, user }) => {
 
   const unreadNotifications = unreadNotificationsFunc(notifications);
 
+  // Latest Messages from a user.
   const individualMessages = messages?.filter((msg) => {
     return msg.senderId === recipientUser?._id;
   });
 
+  // unreadNotif... contains all the unread notifications for the user. We want to display unread notif for all the users who have sent a message.
   const individualUserNotification = unreadNotifications.filter((notif) => {
     return notif.senderId === recipientUser?._id;
   });
 
   return (
-    <div className="user-card flex justify-between px-2 py-3 mb-1 hover:bg-white/[0.02] animate duration-150 ease-in cursor-pointer">
+    <div
+      className="user-card flex justify-between px-2 py-3 mb-1 hover:bg-white/[0.02] animate duration-150 ease-in cursor-pointer"
+      onClick={() => {
+        if (individualUserNotification.length !== 0) {
+          markSelectedNotificationsAsRead(
+            individualUserNotification,
+            notifications
+          );
+        }
+      }}
+    >
       <div className="flex">
         <div className="ml-2 mr-4">
           <img className="h-10 w-10" src={avatar} alt="Avatar" />
