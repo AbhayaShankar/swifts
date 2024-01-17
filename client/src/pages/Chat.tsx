@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { ChatContext } from "../context/ChatContext";
 import UserChat from "../components/chats/UserChat";
 import { AuthContext } from "../context/AuthContext";
@@ -9,8 +9,10 @@ import ChatBox from "../components/chats/ChatBox";
 const Chat: React.FC = () => {
   const { user } = useContext(AuthContext);
 
-  const { userChats, isUserChatsLoading, updateCurrentChat } =
+  const { userChats, isUserChatsLoading, updateCurrentChat, currentChat } =
     useContext(ChatContext);
+
+  const [isCurrentChatActive, setIsCurrentChatActive] = useState(false);
 
   return (
     <div className="py-5">
@@ -27,7 +29,11 @@ const Chat: React.FC = () => {
                 className=""
                 key={index}
               >
-                <UserChat chat={chat} user={user} />
+                <UserChat
+                  selected={chat === currentChat}
+                  chat={chat}
+                  user={user}
+                />
               </div>
             ))}
           </div>

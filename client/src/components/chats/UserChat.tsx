@@ -10,9 +10,10 @@ import { useFetchLatestMessage } from "../../hooks/useFetchLatestMessage";
 interface UserChatInterface {
   chat: userChatType | null;
   user: UserType | null;
+  selected: boolean;
 }
 
-const UserChat: React.FC<UserChatInterface> = ({ chat, user }) => {
+const UserChat: React.FC<UserChatInterface> = ({ chat, user, selected }) => {
   const { recipientUser } = useFetchRecipientUser({ chat, user });
   const { onlineUsers, notifications, markSelectedNotificationsAsRead } =
     useContext(ChatContext);
@@ -42,7 +43,9 @@ const UserChat: React.FC<UserChatInterface> = ({ chat, user }) => {
 
   return (
     <div
-      className="user-card flex justify-between px-2 py-3 mb-1 hover:bg-white/[0.02] animate duration-150 ease-in cursor-pointer"
+      className={`user-card flex justify-between px-2 py-3 mb-1 hover:bg-white/[0.02] animate duration-150 ease-in cursor-pointer ${
+        selected ? "bg-white/5 before:w-1 before:h-full before:bg-white/30" : ""
+      }`}
       onClick={() => {
         if (individualUserNotification.length !== 0) {
           markSelectedNotificationsAsRead(

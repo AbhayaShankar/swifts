@@ -232,7 +232,7 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
       return console.log("Error creating Chat", response);
     }
 
-    setUserChats((prev) => [...prev, response]);
+    setUserChats((prev) => [response, ...prev]);
   }, []);
 
   const updateCurrentChat = useCallback((chat: userChatType) => {
