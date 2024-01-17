@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { createContext, useCallback, useEffect, useState } from "react";
 import { AuthContextType, LoginUserType, UserType } from "../types";
 import { baseUrl, postRequest } from "../utils/services";
@@ -50,7 +49,7 @@ export const AuthContextProvider = ({
   // Register User Logic
   const registerUser = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async (e: React.FormEvent<HTMLInputElement>) => {
+    async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       setIsRegisterLoading(true);
       setRegisterError(null);
@@ -75,7 +74,7 @@ export const AuthContextProvider = ({
 
   const loginUser = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async (e: React.FormEvent<HTMLInputElement>) => {
+    async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       setIsLoginLoading(true);
       setLoginError(null);

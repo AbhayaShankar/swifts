@@ -165,7 +165,8 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
     };
 
     getUserChats();
-  }, [user]);
+    // Check this for unnecessary re renders...
+  }, [user, notifications]);
 
   // Get Messages for a chat
   useEffect(() => {
@@ -294,6 +295,31 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
     []
   );
 
+  // const markSelectedNotificationsAsRead = useCallback(
+  //   (
+  //     individualUserNotification: NotificationsType,
+  //     notifications: NotificationsType
+  //   ) => {
+  //     // mark notif as read
+
+  //     const mNotifications = notifications.map((notif) => {
+  //       let notification;
+
+  //       individualUserNotification?.forEach((n) => {
+  //         if (n.senderId === notif.senderId) {
+  //           notification = { ...n, isRead: true };
+  //         } else {
+  //           notification = notif;
+  //         }
+  //       });
+  //       return notification;
+  //     });
+
+  //     setNotifications(mNotifications);
+  //   },
+  //   []
+  // );
+
   const markSelectedNotificationsAsRead = useCallback(
     (
       individualUserNotification: NotificationsType,
@@ -302,19 +328,24 @@ const ChatContextProvider: React.FC<ChatContextProps> = ({
       // mark notif as read
 
       const mNotifications = notifications.map((notif) => {
-        let notification;
+        const matchingNotification = individualUserNotification.find(
+          (n) => n.senderId === notif.senderId
+        );
 
-        individualUserNotification?.forEach((n) => {
-          if (n.senderId === notif.senderId) {
-            notification = { ...n, isRead: true };
-          } else {
-            notification = notif;
-          }
-        });
-        return notification;
+        if (matchingNotification) {
+          return { ...matchingNotification, isRead: true };
+        } else {
+          return notif;
+        }
       });
 
-      setNotifications(mNotifications);
+      // Ensure that mNotifications is always defined
+      const validMNotifications = mNotifications || [];
+
+      // Ensure that setNotifications is not undefined
+      if (setNotifications) {
+        setNotifications(validMNotifications);
+      }
     },
     []
   );

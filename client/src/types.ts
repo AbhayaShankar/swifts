@@ -44,13 +44,6 @@ export type NotificationType = {
   date: Date;
 };
 
-export type openChatFromNotificationType = {
-  clickedNotif: NotificationType;
-  userChats: UserChatsType | null;
-  user: UserType | null;
-  notifications: NotificationsType;
-};
-
 export type NotificationsType = NotificationType[];
 
 export type AuthContextType = {
@@ -60,8 +53,8 @@ export type AuthContextType = {
   updateRegisterInfo: (info: UserType) => void;
   registerError: ErrorType | null;
   isRegisterLoading: boolean;
-  registerUser: (e: React.FormEvent<HTMLInputElement>) => Promise<void>;
-  loginUser: (e: React.FormEvent<HTMLInputElement>) => Promise<void>;
+  registerUser: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+  loginUser: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
   updateLoginInfo: (info: LoginUserType) => void;
   loginError: ErrorType | null;
   isLoginLoading: boolean;
