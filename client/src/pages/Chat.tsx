@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { ChatContext } from "../context/ChatContext";
 import UserChat from "../components/chats/UserChat";
 import { AuthContext } from "../context/AuthContext";
@@ -11,8 +11,6 @@ const Chat: React.FC = () => {
 
   const { userChats, isUserChatsLoading, updateCurrentChat, currentChat } =
     useContext(ChatContext);
-
-  const [isCurrentChatActive, setIsCurrentChatActive] = useState(false);
 
   return (
     <div className="py-5">
